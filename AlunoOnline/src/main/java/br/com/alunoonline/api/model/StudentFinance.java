@@ -23,15 +23,15 @@ public class StudentFinance implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@OneToOne
 	@JoinColumn(name = "student_id")
 	private Student student;
-	
+
 	private Double discount;
-	
+
 	private Integer dueDate;
-	
+
 	@Enumerated(EnumType.STRING)
 	private FinanceStatusEnum status;
 
