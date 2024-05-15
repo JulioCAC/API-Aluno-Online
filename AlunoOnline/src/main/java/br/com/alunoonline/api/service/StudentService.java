@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.alunoonline.api.dtos.CreateStudentRequest;
 import br.com.alunoonline.api.model.Course;
+import br.com.alunoonline.api.model.Student;
 import br.com.alunoonline.api.repository.CourseRepository;
 import br.com.alunoonline.api.repository.StudentFinanceRepository;
 import br.com.alunoonline.api.repository.StudentRepository;
@@ -15,17 +16,24 @@ import br.com.alunoonline.api.repository.StudentRepository;
 public class StudentService {
 	@Autowired
 	StudentRepository studentRepository;
-	
+
 	@Autowired
 	StudentFinanceRepository studentFinanceRepository;
-	
-	@Autowired 
+
+	@Autowired
 	CourseRepository courseRepository;
-	
+
 	public void create(CreateStudentRequest createStudentRequest) {
 		Course course = courseRepository.findById(createStudentRequest.getCourseId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
-		
+		Student stundetSave = studentRepository.save(
+				new Student(
+						null, 
+						createStudentRequest.getName(), 
+						createStudentRequest.getEmail(), 
+						course
+						)
+				);
 				
 	}
 
