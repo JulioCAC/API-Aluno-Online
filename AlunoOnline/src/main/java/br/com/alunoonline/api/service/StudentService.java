@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Optional;
+
 import br.com.alunoonline.api.dtos.CreateStudentRequest;
 import br.com.alunoonline.api.model.Course;
 import br.com.alunoonline.api.model.Student;
@@ -25,7 +28,7 @@ public class StudentService {
 
 	public void create(CreateStudentRequest createStudentRequest) {
 		Course course = courseRepository.findById(createStudentRequest.getCourseId())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado"));
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
 		Student stundetSave = studentRepository.save(
 				new Student(
 						null, 
@@ -35,6 +38,14 @@ public class StudentService {
 						)
 				);
 				
+	}
+	
+	public List<Student> findAll(){
+		return studentRepository.findAll();
+		
+	}
+	public Optional<Student> findById(Long id){
+		return studentRepository.findById(id);
 	}
 
 }
