@@ -60,5 +60,9 @@ public class StudentService {
 		studentUpdated.setEmail(student.getEmail());
 		studentRepository.save(studentUpdated);
 	}
+	
+	public void deleteById(Long id) {
+		studentRepository.deleteById(id);
+	}
 
 }
