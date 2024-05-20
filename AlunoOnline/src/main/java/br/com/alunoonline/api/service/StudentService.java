@@ -47,5 +47,18 @@ public class StudentService {
 	public Optional<Student> findById(Long id){
 		return studentRepository.findById(id);
 	}
+	public void update(Long id, Student student) {
+		Optional<Student> studentFromDb = findById(id);
+		
+		if(studentFromDb.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado");
+		}
+		
+		Student studentUpdated = studentFromDb.get();
+		
+		studentUpdated.setName(student.getName());
+		studentUpdated.setEmail(student.getEmail());
+		studentRepository.save(studentUpdated);
+	}
 
 }
