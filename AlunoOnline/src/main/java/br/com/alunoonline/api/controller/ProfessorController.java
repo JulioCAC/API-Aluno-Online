@@ -15,43 +15,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alunoonline.api.model.Course;
-import br.com.alunoonline.api.service.CourseService;
+import br.com.alunoonline.api.model.Professor;
+import br.com.alunoonline.api.service.ProfessorService;
 
 @RestController
-@RequestMapping("/course")
-public class CourseController {
+@RequestMapping("/professor")
+public class ProfessorController {
 	@Autowired
-	CourseService courseService;
+	ProfessorService professorService;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void create(@RequestBody Course course) {
-		courseService.create(course);
+	public void create(@RequestBody Professor professor) {
+		professorService.create(professor);
 	}
 
 	@GetMapping("/all")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Course> findAll() {
-		return courseService.findAll();
+	public List<Professor> findAll() {
+		return professorService.findAll();
 	}
 
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Course> findById(@PathVariable Long id) {
-		return courseService.findById(id);
+	public Optional<Professor> findById(@PathVariable Long id) {
+		return professorService.findById(id);
 	}
 
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@RequestBody Course course, @PathVariable Long id) {
-		courseService.update(id, course);
+	public void update(@RequestBody Professor professor, @PathVariable Long id) {
+		professorService.update(id, professor);
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteById(@PathVariable Long id) {
-		courseService.deleteById(id);
+	public void delete(@PathVariable Long id) {
+		professorService.deleteById(id);
 	}
 
 }

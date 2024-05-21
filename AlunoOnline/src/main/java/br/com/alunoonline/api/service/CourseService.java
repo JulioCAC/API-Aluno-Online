@@ -15,38 +15,37 @@ import br.com.alunoonline.api.repository.CourseRepository;
 public class CourseService {
 	@Autowired
 	CourseRepository courseRepository;
-	
+
 	public void create(Course course) {
 		courseRepository.save(course);
 	}
-	
+
 	public List<Course> findAll() {
 		return courseRepository.findAll();
 	}
-	
-	public Optional<Course> findById(Long id){
+
+	public Optional<Course> findById(Long id) {
 		return courseRepository.findById(id);
 	}
-	
-	public void update(Long id, Course course){
+
+	public void update(Long id, Course course) {
 		Optional<Course> courseFromDb = findById(id);
-		
-		if(courseFromDb.isEmpty()) {
+
+		if (courseFromDb.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado no banco de dados");
 		}
-		
+
 		Course courseUpdated = courseFromDb.get();
-		
+
 		courseUpdated.setName(course.getName());
 		courseUpdated.setTuition(course.getTuition());
 		courseUpdated.setType(course.getType());
 		courseRepository.save(courseUpdated);
-		
+
 	}
-	
+
 	public void deleteById(Long id) {
 		courseRepository.deleteById(id);
 	}
-	
 
 }

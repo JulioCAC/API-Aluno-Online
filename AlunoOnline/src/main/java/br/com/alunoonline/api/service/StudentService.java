@@ -29,38 +29,34 @@ public class StudentService {
 	public void create(CreateStudentRequest createStudentRequest) {
 		Course course = courseRepository.findById(createStudentRequest.getCourseId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
-		Student stundetSave = studentRepository.save(
-				new Student(
-						null, 
-						createStudentRequest.getName(), 
-						createStudentRequest.getEmail(), 
-						course
-						)
-				);
-				
+		Student stundetSave = studentRepository
+				.save(new Student(null, createStudentRequest.getName(), createStudentRequest.getEmail(), course));
+
 	}
-	
-	public List<Student> findAll(){
+
+	public List<Student> findAll() {
 		return studentRepository.findAll();
-		
+
 	}
-	public Optional<Student> findById(Long id){
+
+	public Optional<Student> findById(Long id) {
 		return studentRepository.findById(id);
 	}
+
 	public void update(Long id, Student student) {
 		Optional<Student> studentFromDb = findById(id);
-		
-		if(studentFromDb.isEmpty()) {
+
+		if (studentFromDb.isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado");
 		}
-		
+
 		Student studentUpdated = studentFromDb.get();
-		
+
 		studentUpdated.setName(student.getName());
 		studentUpdated.setEmail(student.getEmail());
 		studentRepository.save(studentUpdated);
 	}
-	
+
 	public void deleteById(Long id) {
 		studentRepository.deleteById(id);
 	}

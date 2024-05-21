@@ -38,23 +38,23 @@ public class StudentController {
 		return studentService.findAll();
 
 	}
-	
+
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Student> findById(@PathVariable Long id){
+	public Optional<Student> findById(@PathVariable Long id) {
 		return studentService.findById(id);
 	}
-	
+
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void update(@RequestBody Student student, @PathVariable Long id) {
 		studentService.update(id, student);
 	}
+
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long id) {
 		studentService.deleteById(id);
 	}
-	
 
 }
