@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.alunoonline.api.dtos.CreateStudentRequest;
+import br.com.alunoonline.api.enums.FinanceStatusEnum;
 import br.com.alunoonline.api.model.Course;
 import br.com.alunoonline.api.model.Student;
+import br.com.alunoonline.api.model.StudentFinance;
 import br.com.alunoonline.api.repository.CourseRepository;
 import br.com.alunoonline.api.repository.StudentFinanceRepository;
 import br.com.alunoonline.api.repository.StudentRepository;
@@ -31,6 +33,7 @@ public class StudentService {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
 		Student stundetSave = studentRepository
 				.save(new Student(null, createStudentRequest.getName(), createStudentRequest.getEmail(), course));
+		createStudentFinance(stundetSave, createStudentRequest);
 
 	}
 
@@ -59,6 +62,14 @@ public class StudentService {
 
 	public void deleteById(Long id) {
 		studentRepository.deleteById(id);
+	}
+
+	public void createStudentFinance(Student student, CreateStudentRequest createStudentRequest) {
+		StudentFinance studentFinance = new StudentFinance(null, student, createStudentRequest.getDiscount(),
+				createStudentRequest.getDueDate(), FinanceStatusEnum.EM_DIA);
+		
+		studentFinanceRepository.save(studentFinance);
+
 	}
 
 }
