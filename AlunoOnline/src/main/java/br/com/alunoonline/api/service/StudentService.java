@@ -32,7 +32,7 @@ public class StudentService {
 		Course course = courseRepository.findById(createStudentRequest.getCourseId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado"));
 		Student stundetSave = studentRepository
-				.save(new Student(null, createStudentRequest.getName(), createStudentRequest.getEmail(), course));
+				.save(new Student(null, createStudentRequest.getName(), createStudentRequest.getEmail(), course, null));
 		createStudentFinance(stundetSave, createStudentRequest);
 
 	}

@@ -2,6 +2,8 @@ package br.com.alunoonline.api.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import br.com.alunoonline.api.enums.FinanceStatusEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,6 +28,7 @@ public class StudentFinance implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "student_id")
+	@JsonBackReference
 	private Student student;
 
 	private Double discount;
