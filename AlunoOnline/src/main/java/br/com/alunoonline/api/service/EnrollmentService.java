@@ -1,13 +1,19 @@
 package br.com.alunoonline.api.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.alunoonline.api.dtos.StudentSubjectResponse;
+import br.com.alunoonline.api.dtos.StudentTranscriptResponse;
 import br.com.alunoonline.api.dtos.UpdateGradesRequest;
 import br.com.alunoonline.api.enums.EnrollmentStatusEnum;
 import br.com.alunoonline.api.model.Enrollment;
+import br.com.alunoonline.api.model.Subject;
 import br.com.alunoonline.api.repository.EnrollmentRepository;
 
 @Service
@@ -61,6 +67,43 @@ public class EnrollmentService {
 		enrollment.setStatus(enrollmentStatusEnum);
 		enrollmentRepository.save(enrollment);
 	}
+	
+	public StudentTranscriptResponse getAcademicTranscript(Long alunoId) {
+		List<Enrollment> studentEnrollment = enrollmentRepository.findByStudentId(alunoId);
+		
+		if(studentEnrollment.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Esse aluno não possui matrícula ativa");
+		}
+		
+		StudentTranscriptResponse transcript = new StudentTranscriptResponse();
+		transcript.setStudentName(studentEnrollment.get(0).getStudent().getName());
+		transcript.setStudentEmail(studentEnrollment.get(0).getStudent().getEmail());
+		
+		List<StudentSubjectResponse> subjectList = new ArrayList<>();
+		
+		for (Enrollment enrollment : studentEnrollment) {
+			StudentSubjectResponse studentSubjectResponse = new StudentSubjectResponse();
+			studentSubjectResponse.setSubjectName(enrollment.getSubject().getName());
+			studentSubjectResponse.setProfessorName(enrollment.getSubject().getProfessor().getName());
+			studentSubjectResponse.setGrade1(enrollment.getGrade1());
+			studentSubjectResponse.setGrade2(enrollment.getGrade2());
+			
+			Double average = calculateAverage(enrollment);
+			
+			if (average != null) {
+				studentSubjectResponse.setAverage(average);
+			}
+			
+			studentSubjectResponse.setStatus(enrollment.getStatus());
+			subjectList.add(studentSubjectResponse);
+			
+		}
+		
+		transcript.setStudentSubjectResponsesList(subjectList);
+		
+		return transcript;
+	}
+
 
 	public Double calculateAverage(Enrollment enrollment) {
 
